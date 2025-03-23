@@ -32,11 +32,9 @@ class ProductController extends Controller
                 return response()->json(['message'=>'All fields are mandetory' ,
                 'error'=>$validator->messages()] , 422);
             }
-            $product =Product::create([
-                'name'=>$request->name,
-                    'description'=>$request->description,
-                    'price'=>$request->price,
-            ]);
+            $data = $request->all() ;
+            $data['user_id'] = $request->user()->id ;
+            $product = Product::create($data) ;
             return response()->json(['message'=>'Product Created Successfully',
             'data'=>new ProductResource($product)
             ] , 200) ;
